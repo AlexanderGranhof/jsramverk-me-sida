@@ -1,3 +1,7 @@
+## Quickstart
+run `npm run start` and navigate to http://localhost:3000
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
