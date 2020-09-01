@@ -3,11 +3,19 @@
     height: 100%;
     width: 100%;
     border-right: 1px solid #A0947E;
-    padding-right: clamp(100px, 5vh, 800px);
+    padding: clamp(100px, 5vh, 800px) 0;
     display: grid;
     grid-template-rows: auto 1fr;
+    background-color: #FEFBF6;
+    z-index: 1000;
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 
     .title {
+        margin: 0 60px;
         border-bottom: solid 1px #A0947E;
         padding-bottom: 20px;
         margin-bottom: 20px;
