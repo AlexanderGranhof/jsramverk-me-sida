@@ -4,5 +4,20 @@
     width: 100vw;
     height: 100vh;
     padding: 10vh clamp(100px, 5vh, 800px);
+    padding-left: 0;
+
+    .content {
+        padding: 40px 80px;
+        position: relative;
+        width: 100%;
+
+        p {
+            font-size: clamp(16px, 2vw, 24px);
+            max-width: 60ch;
+            line-height: 150%;
+            opacity: 0.8;
+            width: 100vw;
+        }
+    }
 }
 
