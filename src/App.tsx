@@ -10,6 +10,11 @@ import Nav from './components/nav/nav'
 import About from './reports/about/about'
 import Kmom01 from './reports/kmom01/kmom01'
 import Kmom02 from './reports/kmom02/kmom02'
+import Kmom03 from './reports/kmom03/kmom03'
+import Kmom04 from './reports/kmom04/kmom04'
+import Kmom05 from './reports/kmom05/kmom05'
+import Kmom06 from './reports/kmom06/kmom06'
+import Kmom10 from './reports/kmom10/kmom10'
 
 const App: FunctionComponent = () => {
     return (
@@ -25,6 +30,11 @@ const App: FunctionComponent = () => {
                                         <Route exact path="/" component={About} />
                                         <Route path="/reports/week/1" component={Kmom01} />
                                         <Route path="/reports/week/2" component={Kmom02} />
+                                        <Route path="/reports/week/3" component={Kmom03} />
+                                        <Route path="/reports/week/4" component={Kmom04} />
+                                        <Route path="/reports/week/5" component={Kmom05} />
+                                        <Route path="/reports/week/6" component={Kmom06} />
+                                        <Route path="/reports/week/7" component={Kmom10} />
                                     </Switch>
                                 </CSSTransition>
                             </TransitionGroup>
