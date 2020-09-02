@@ -1,5 +1,7 @@
 ## Quickstart
-run `npm run start` and navigate to http://localhost:3000
+0. have `node` and `npm` intalled
+1. run `npm install` to install dependencies
+2. run `npm run start` and navigate to http://localhost:3000
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
