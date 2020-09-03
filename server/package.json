@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts"
+    "start": "ts-node-dev src/index.ts",
+    "db:init": "knex --knexfile 'src/services/db/knexfile.js' migrate:latest",
+    "db:seed": "knex --knexfile 'src/services/db/knexfile.js' seed:run"
   },
   "keywords": [],
   "author": "",
