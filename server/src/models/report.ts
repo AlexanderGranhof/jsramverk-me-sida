@@ -3,6 +3,7 @@ import joi from 'joi'
 export interface IncomingReportModel {
     title: string
     content: string
+    week: number
 }
 
 export interface ReportModel extends IncomingReportModel {
@@ -15,6 +16,7 @@ export default interface CreatedReportModel extends ReportModel {
 
 export const ReportSchema = joi.object({
     title: joi.string().required(),
+    week: joi.number().required(),
     content: joi.string().required(),
-    user_id: joi.number().required(),
+    // user_id: joi.number().required(),
 })
