@@ -7,6 +7,7 @@ exports.up = function (knex) {
 
     const reports = knex.schema.createTable('reports', (table) => {
         table.increments('id')
+        table.integer('week').unique()
         table.string('title')
         table.string('content')
         table.string('user_id').references('id').inTable('users')
