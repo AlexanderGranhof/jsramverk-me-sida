@@ -8,7 +8,7 @@ interface HttpErrorConstructor {
     message: string
     name: string
     statusCode: valueof<HttpResponseCodeTypes>
-    data: unknown
+    data?: unknown
 }
 
 export class HttpError extends Error {
@@ -28,19 +28,19 @@ export class HttpError extends Error {
 }
 
 export class HttpBadRequest extends HttpError {
-    constructor(message = 'Bad Request', data: unknown) {
+    constructor(message = 'Bad Request', data?: unknown) {
         super({ message, name: 'HttpBadRequest', statusCode: BAD_REQUEST, data })
     }
 }
 
 export class HttpNotFound extends HttpError {
-    constructor(message = 'Not Found', data: unknown) {
+    constructor(message = 'Not Found', data?: unknown) {
         super({ message, name: 'HttpNotFound', statusCode: NOT_FOUND, data })
     }
 }
 
 export class HttpInternalServerError extends HttpError {
-    constructor(message = 'Internal server error', data: unknown) {
+    constructor(message = 'Internal server error', data?: unknown) {
         super({
             message,
             name: 'HttpInternalServerError',
