@@ -11,12 +11,15 @@
         position: relative;
         width: 100%;
 
+        h1 {
+            width: 30ch;
+        }
+
         p {
             font-size: clamp(16px, 2vw, 24px);
-            max-width: 60ch;
+            width: 60ch;
             line-height: 150%;
             opacity: 0.8;
-            width: 100vw;
         }
     }
 }
