@@ -1,0 +1,26 @@
+.top-nav {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    
+    list-style: none;
+    display: flex;
+    width: 20vw;
+    padding: 30px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.15px;
+    justify-content: flex-end;
+    place-content: space-around;
+    
+    li {
+        opacity: 0.75;
+        transition: opacity 120ms ease;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
