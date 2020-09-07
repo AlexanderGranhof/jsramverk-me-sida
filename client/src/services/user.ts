@@ -10,3 +10,10 @@ export const create = (username: string, password: string) => {
         password,
     })
 }
+
+export const login = (username: string, password: string) => {
+    return apiFetch('login', {
+        username,
+        password,
+    })
+}
