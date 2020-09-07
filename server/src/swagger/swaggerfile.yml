@@ -101,6 +101,30 @@ paths:
           description: Success
         401:
           description: Invalid credentials
+
+  /username/status/{username}:
+    get:
+      tags:
+      - user
+      summary: Get status of a particular username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username you want a status for
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  taken:
+                    type: boolean
         
 components:
   schemas:
