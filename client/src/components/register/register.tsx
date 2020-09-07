@@ -1,8 +1,9 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, useContext } from 'react'
 import styles from './register.module.scss'
 import { CSSTransition } from 'react-transition-group'
 import './register.transitions.scss'
 import * as User from '../../services/user'
+import { authContext } from '../../contexts/auth'
 
 import Input from '../input/input'
 import Button from '../button/button'
@@ -19,6 +20,8 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [rePassword, setRePassword] = useState('')
+
+    const [auth, setAuth] = useContext(authContext)
 
     const defaultErrors = {
         username: '',
@@ -83,7 +86,14 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
             return
         }
 
-        await User.create(username, password)
+        const response = await User.create(username, password)
+
+        if (response.ok) {
+            const { username } = await response.json()
+
+            setAuth({ username, authenticated: true })
+        }
+
         sendCloseEvent()
     }
 

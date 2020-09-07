@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, useContext } from 'react'
 import styles from './signin.module.scss'
 import { CSSTransition } from 'react-transition-group'
 import './signin.transitions.scss'
@@ -6,6 +6,7 @@ import * as User from '../../services/user'
 
 import Input from '../input/input'
 import Button from '../button/button'
+import { authContext } from '../../contexts/auth'
 
 type RegisterProps = {
     onClose?: () => void
@@ -18,6 +19,8 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const [auth, setAuth] = useContext(authContext)
 
     const defaultErrors = {
         username: '',
@@ -58,11 +61,17 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         const response = await User.login(username, password)
 
         if (response.status === 401) {
-            setErrors({
+            return setErrors({
                 ...errors,
                 username: 'Incorrect username or password',
                 password: 'Incorrect username or password',
             })
+        }
+
+        if (response.ok) {
+            const { username } = await response.json()
+
+            setAuth({ username, authenticated: true })
         }
 
         return sendCloseEvent()
