@@ -11,6 +11,13 @@ router.post(
         const user = await UserSchema.validateAsync(req.body)
 
         await User.create(user)
+        const userDBObject = await User.validate(user)
+
+        if (!req.session) {
+            return res.status(500).send('undefined session')
+        }
+
+        req.session.user = userDBObject
 
         res.sendStatus(201)
     }),
