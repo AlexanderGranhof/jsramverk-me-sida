@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import crypto from 'crypto'
 import session from 'express-session'
 import cors from 'cors'
+import swagger from './swagger/middleware'
 
 import { HttpErrorHandler, JoiErrorHandler, SqliteErrorHandler } from './api/middleware/error'
 
@@ -24,6 +25,7 @@ app.set('trust proxy', 1) // trust nginx
 app.use(cors())
 app.use(express.json())
 app.use(morgan(loggingMode))
+app.use('/docs', ...swagger)
 app.use(
     session({
         secret: crypto.randomBytes(64).toString('hex'),
