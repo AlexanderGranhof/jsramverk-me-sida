@@ -1,0 +1,57 @@
+.register-form {
+    padding: 40px;
+    position: fixed;
+    left: 50%;
+    top: 30%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    width: 30vw;
+    height: auto;
+    background-color: #fdf8f1;
+
+    h1 {
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+}
+
+.overlay {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 85%;
+    background-color: #4E4B47;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    margin: 50px;
+
+    &::before,
+    &::after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        margin: 0px 8px;
+        width: 3px;
+        height: 20px;
+        background-color: #4E4B47;
+        transform-origin: center;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        transform: rotate(-45deg)
+    }
+}
+
+.button {
+    width: 100%;
+    padding: 8px 0 !important;
+}
