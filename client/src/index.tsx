@@ -4,6 +4,8 @@ import './index.scss'
 import 'normalize.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import { AuthProvider } from './contexts/auth'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 // ReactDOM.render(
 //     <React.StrictMode>
@@ -12,7 +14,14 @@ import * as serviceWorker from './serviceWorker'
 //     document.getElementById('root'),
 // )
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(
+    <AuthProvider>
+        <Router>
+            <App />
+        </Router>
+    </AuthProvider>,
+    document.getElementById('root'),
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
