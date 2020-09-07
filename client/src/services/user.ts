@@ -17,3 +17,7 @@ export const login = (username: string, password: string) => {
         password,
     })
 }
+
+export const logout = () => {
+    return apiFetch('logout', {})
+}
