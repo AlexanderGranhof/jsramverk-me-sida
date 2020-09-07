@@ -1,0 +1,24 @@
+.App-enter {
+    transform: scale(1.1);
+    opacity: 0 !important;
+}
+
+.App-enter-active {
+    transition: all 500ms ease-in-out !important;
+    opacity: 1 !important;
+    transform: scale(1);
+}
+
+.App-exit {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 1 !important;
+    transform: scale(1);
+}
+
+.App-exit-active {
+    transition: all 500ms ease-in-out !important;
+    opacity: 0 !important;
+    transform: scale(1.1);
+}
