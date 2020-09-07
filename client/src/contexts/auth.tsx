@@ -6,7 +6,7 @@ type AuthContextType = {
 }
 
 const baseContext: AuthContextType = { username: '', authenticated: false }
-const cachedString = localStorage.getItem('context.userContext')
+const cachedString = localStorage.getItem('context.auth')
 
 let initialContext: AuthContextType
 
@@ -16,13 +16,19 @@ try {
     initialContext = baseContext
 }
 
-const authContext = createContext<[AuthContextType?, ((data: AuthContextType) => void)?]>([])
+// Its not great to initialize with an empty function, i dont know how to solve the error otherwise
+const authContext = createContext<[AuthContextType, (data: AuthContextType) => void]>([
+    initialContext,
+    (data: AuthContextType) => {
+        return
+    },
+])
 
 const AuthProvider: FunctionComponent = ({ children }) => {
     const [userState, setState] = useState(initialContext)
 
     const setUserState = (data: AuthContextType) => {
-        localStorage.setItem('context.userContext', JSON.stringify(data))
+        localStorage.setItem('context.auth', JSON.stringify(data))
 
         return setState(data)
     }
