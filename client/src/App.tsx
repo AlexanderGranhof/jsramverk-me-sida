@@ -1,20 +1,26 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, useContext } from 'react'
 import styles from './App.module.scss'
-import { UserProvider } from './contexts/auth'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { authContext } from './contexts/auth'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { Switch, Route, useHistory } from 'react-router-dom'
+import * as User from './services/user'
+import './App.transitions.scss'
 
 import Nav from './components/nav/nav'
 import TopNav from './components/nav/top/top'
-
-import Main from './views/main/main'
 import Register from './components/register/register'
 import SignIn from './components/signin/signin'
 
+import Main from './views/main/main'
+import ReportEdit from './views/report/report'
+
 const App: FunctionComponent = () => {
     const [showRegister, setShowRegister] = useState(false)
-    const [showSignIn, setShowSignIn] = useState(true)
+    const [showSignIn, setShowSignIn] = useState(false)
+    const [auth, setAuth] = useContext(authContext)
+    const history = useHistory()
 
-    const handleMenuClick = (item: string) => {
+    const handleMenuClick = async (item: string) => {
         if (item === 'register') {
             return setShowRegister(true)
         }
@@ -22,20 +28,45 @@ const App: FunctionComponent = () => {
         if (item === 'sign in') {
             return setShowSignIn(true)
         }
+
+        if (item === 'sign out') {
+            await User.logout()
+
+            return setAuth({ username: '', authenticated: false })
+        }
+
+        if (item === 'edit reports') {
+            return history.push('/edit')
+        }
     }
 
     return (
-        <div className={styles['container']}>
-            <Router>
-                <UserProvider>
-                    {showRegister && <Register onClose={() => setShowRegister(false)} />}
-                    {showSignIn && <SignIn onClose={() => setShowSignIn(false)} />}
-                    <TopNav onClick={handleMenuClick} />
-                    <Nav />
-                    <Main />
-                </UserProvider>
-            </Router>
-        </div>
+        <Route
+            render={({ location }) => (
+                <TransitionGroup>
+                    <CSSTransition
+                        key={location.pathname === '/edit' ? 'edit' : 'reports'}
+                        timeout={10000}
+                        classNames="App"
+                    >
+                        <Switch location={location}>
+                            <Route path="/edit" component={ReportEdit} />
+                            <Route>
+                                <div className={styles['container']}>
+                                    {showRegister && (
+                                        <Register onClose={() => setShowRegister(false)} />
+                                    )}
+                                    {showSignIn && <SignIn onClose={() => setShowSignIn(false)} />}
+                                    <TopNav onClick={handleMenuClick} />
+                                    <Nav />
+                                    <Main />
+                                </div>
+                            </Route>
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
+            )}
+        />
     )
 }
 
