@@ -23,7 +23,7 @@ export const validate = async (user: UserModel) => {
         return false
     }
 
-    const valid = bcrypt.compare(password, foundUser.password)
+    const valid = await bcrypt.compare(password, foundUser.password)
 
     return valid ? foundUser : false
 }
