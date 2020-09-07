@@ -54,17 +54,4 @@ router.post('/logout', (req, res) => {
     })
 })
 
-router.get(
-    '/username/status/:username',
-    wrapAsync(async (req, res) => {
-        const { username } = req.params
-
-        const user = await User.get(username)
-
-        return res.json({
-            taken: !!user,
-        })
-    }),
-)
-
 export default router
