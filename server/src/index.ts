@@ -22,7 +22,7 @@ const loggingMode = process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
 app.set('trust proxy', 1) // trust nginx
 
 /* Request pre-processor middleware */
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 app.use(express.json())
 app.use(morgan(loggingMode))
 app.use('/docs', ...swagger)
