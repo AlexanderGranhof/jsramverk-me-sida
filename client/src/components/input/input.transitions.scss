@@ -1,0 +1,21 @@
+.error-enter {
+    bottom: 20px !important;
+}
+
+.error-enter-active {
+    bottom: 0px !important;
+    transition: bottom 120ms ease !important;
+}
+
+.error-enter-done {
+    bottom: 0px !important;
+}
+
+.error-exit {
+    bottom: 0px !important;
+}
+
+.error-exit-active {
+    bottom: 20px !important;
+    transition: bottom 120ms ease !important;
+}
