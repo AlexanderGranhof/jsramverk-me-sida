@@ -1,40 +1,31 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import styles from './App.module.scss'
-import './App.transitions.scss'
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import Nav from './components/nav/nav'
+import TopNav from './components/nav/top/top'
 
-import Report from './components/report/report'
+import Main from './views/main/main'
+import Register from './components/register/register'
 
 const App: FunctionComponent = () => {
+    const [showRegister, setShowRegister] = useState(true)
+
+    const handleMenuClick = (item: string) => {
+        console.log(item)
+        if (item === 'register') {
+            return setShowRegister(true)
+        }
+    }
+
     return (
         <div className={styles['container']}>
             <Router>
+                {showRegister && <Register onClose={() => setShowRegister(false)} />}
+                <TopNav onClick={handleMenuClick} />
                 <Nav />
-                <div className={styles['content']}>
-                    <Route
-                        render={({ location }) => (
-                            <TransitionGroup>
-                                <CSSTransition
-                                    key={location.pathname}
-                                    timeout={5000}
-                                    classNames="page"
-                                >
-                                    <Switch location={location}>
-                                        <Route exact path="/" component={Report} />
-                                        <Route
-                                            path="/reports/week/:weekNumber"
-                                            component={Report}
-                                        />
-                                    </Switch>
-                                </CSSTransition>
-                            </TransitionGroup>
-                        )}
-                    ></Route>
-                </div>
+                <Main />
             </Router>
         </div>
     )
