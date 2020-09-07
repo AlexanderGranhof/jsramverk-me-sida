@@ -21,22 +21,18 @@ const App: FunctionComponent = () => {
     const history = useHistory()
 
     const handleMenuClick = async (item: string) => {
-        if (item === 'register') {
-            return setShowRegister(true)
-        }
+        switch (item) {
+            case 'register':
+                return setShowRegister(true)
 
-        if (item === 'sign in') {
-            return setShowSignIn(true)
-        }
+            case 'sign in':
+                return setShowSignIn(true)
 
-        if (item === 'sign out') {
-            await User.logout()
-
-            return setAuth({ username: '', authenticated: false })
-        }
-
-        if (item === 'edit reports') {
-            return history.push('/edit')
+            case 'sign out':
+                await User.logout()
+                return setAuth({ username: '', authenticated: false })
+            case 'edit reports':
+                return history.push('/edit')
         }
     }
 
