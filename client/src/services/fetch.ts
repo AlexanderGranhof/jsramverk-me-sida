@@ -8,7 +8,7 @@ export default (path = '', body?: Record<string, any>) => {
 
     return fetch(url, {
         method: body ? 'POST' : 'GET',
-        credentials: 'same-origin',
+        credentials: 'include',
         body: body ? JSON.stringify(body) : undefined,
         headers,
     })
