@@ -27,3 +27,7 @@ export const validate = async (user: UserModel) => {
 
     return valid ? foundUser : false
 }
+
+export const get = async (username: string) => {
+    return users().where({ username }).first()
+}
