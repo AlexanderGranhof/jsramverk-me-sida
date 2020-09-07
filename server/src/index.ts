@@ -12,6 +12,7 @@ import { HttpErrorHandler, JoiErrorHandler, SqliteErrorHandler } from './api/mid
 import RootRoute from './api/routes/root'
 import UserRoute from './api/routes/user'
 import ReportRoute from './api/routes/report'
+import ValidationRoute from './api/routes/validation'
 
 dotenv.config() // Load env variables from .env file
 
@@ -40,6 +41,7 @@ app.use(
 app.use(RootRoute)
 app.use(UserRoute)
 app.use(ReportRoute)
+app.use(ValidationRoute)
 
 /* Error handler middleware */
 
