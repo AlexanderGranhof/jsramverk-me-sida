@@ -19,7 +19,7 @@ router.post(
 
         req.session.user = userDBObject
 
-        res.sendStatus(201)
+        res.status(201).json(user)
     }),
 )
 
@@ -40,7 +40,7 @@ router.post(
 
         req.session.user = userDBObject
 
-        return res.sendStatus(200)
+        return res.status(200).json(user)
     }),
 )
 
