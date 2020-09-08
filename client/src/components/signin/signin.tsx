@@ -20,7 +20,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const [auth, setAuth] = useContext(authContext)
+    const [, setAuth] = useContext(authContext)
 
     const defaultErrors = {
         username: '',
@@ -51,7 +51,11 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         return true
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
+        if (event) {
+            event.preventDefault()
+        }
+
         const valid = await verifyFields()
 
         if (!valid) {
@@ -81,34 +85,36 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         <React.Fragment>
             <CSSTransition classNames="fade-in" timeout={300} appear={true} in={true}>
                 <div className={styles['register-form']}>
-                    <h1>Sign in</h1>
-                    <div>
-                        <Input
-                            label="Username"
-                            name="username"
-                            type="text"
-                            onInput={(value) => {
-                                setUsername(value)
-                                clearUsernameErrors()
-                            }}
-                            errorText={errors.username}
-                            showError={!!errors.username}
-                        />
-                        <Input
-                            label="Password"
-                            name="password"
-                            type="password"
-                            onInput={(value) => {
-                                setPassword(value)
-                                clearPasswordErrors()
-                            }}
-                            errorText={errors.password}
-                            showError={!!errors.password}
-                        />
-                        <Button onClick={handleSubmit} className={styles['button']}>
-                            Sign in
-                        </Button>
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <h1>Sign in</h1>
+                        <div>
+                            <Input
+                                label="Username"
+                                name="username"
+                                type="text"
+                                onInput={(value) => {
+                                    setUsername(value)
+                                    clearUsernameErrors()
+                                }}
+                                errorText={errors.username}
+                                showError={!!errors.username}
+                            />
+                            <Input
+                                label="Password"
+                                name="password"
+                                type="password"
+                                onInput={(value) => {
+                                    setPassword(value)
+                                    clearPasswordErrors()
+                                }}
+                                errorText={errors.password}
+                                showError={!!errors.password}
+                            />
+                            <Button onClick={handleSubmit} className={styles['button']}>
+                                Sign in
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </CSSTransition>
             <div onClick={sendCloseEvent} className={styles['overlay']} />

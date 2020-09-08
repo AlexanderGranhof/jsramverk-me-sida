@@ -21,7 +21,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
     const [password, setPassword] = useState('')
     const [rePassword, setRePassword] = useState('')
 
-    const [auth, setAuth] = useContext(authContext)
+    const [, setAuth] = useContext(authContext)
 
     const defaultErrors = {
         username: '',
@@ -69,6 +69,11 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
             return false
         }
 
+        if (password !== rePassword) {
+            setErrors({ ...errors, rePassword: 'passwords do not match' })
+            return false
+        }
+
         const { taken } = await (await User.taken(username)).json()
 
         if (taken) {
@@ -79,7 +84,11 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         return true
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
+        if (event) {
+            event.preventDefault()
+        }
+
         const valid = await verifyFields()
 
         if (!valid) {
@@ -101,44 +110,46 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         <React.Fragment>
             <CSSTransition classNames="fade-in" timeout={300} appear={true} in={true}>
                 <div className={styles['register-form']}>
-                    <h1>Register new user</h1>
-                    <div>
-                        <Input
-                            label="Username"
-                            name="username"
-                            type="text"
-                            onInput={(value) => {
-                                setUsername(value)
-                                clearUsernameErrors()
-                            }}
-                            errorText={errors.username}
-                            showError={!!errors.username}
-                        />
-                        <Input
-                            label="Password"
-                            name="password"
-                            type="password"
-                            onInput={(value) => {
-                                setPassword(value)
-                                clearPasswordErrors()
-                            }}
-                            onBlur={handlePasswordCompare}
-                            errorText={errors.password}
-                            showError={!!errors.password}
-                        />
-                        <Input
-                            label="Re-type password"
-                            name="re-password"
-                            type="password"
-                            onInput={setRePassword}
-                            onBlur={handlePasswordCompare}
-                            errorText={errors.rePassword}
-                            showError={!!errors.rePassword}
-                        />
-                        <Button onClick={handleSubmit} className={styles['button']}>
-                            Register
-                        </Button>
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <h1>Register new user</h1>
+                        <div>
+                            <Input
+                                label="Username"
+                                name="username"
+                                type="text"
+                                onInput={(value) => {
+                                    setUsername(value)
+                                    clearUsernameErrors()
+                                }}
+                                errorText={errors.username}
+                                showError={!!errors.username}
+                            />
+                            <Input
+                                label="Password"
+                                name="password"
+                                type="password"
+                                onInput={(value) => {
+                                    setPassword(value)
+                                    clearPasswordErrors()
+                                }}
+                                onBlur={handlePasswordCompare}
+                                errorText={errors.password}
+                                showError={!!errors.password}
+                            />
+                            <Input
+                                label="Re-type password"
+                                name="re-password"
+                                type="password"
+                                onInput={setRePassword}
+                                onBlur={handlePasswordCompare}
+                                errorText={errors.rePassword}
+                                showError={!!errors.rePassword}
+                            />
+                            <Button onClick={handleSubmit} className={styles['button']}>
+                                Register
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </CSSTransition>
             <div onClick={sendCloseEvent} className={styles['overlay']} />
