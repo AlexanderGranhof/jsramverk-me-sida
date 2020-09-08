@@ -12,8 +12,18 @@ router.post(
     authenticate,
     wrapAsync(async (req, res) => {
         const report: IncomingReportModel = await ReportSchema.validateAsync(req.body)
+        const user = req.session?.user
 
-        await Report.create(req.session?.user, req.body)
+        const exists = !!(await Report.week(report.week))
+
+        if (exists) {
+            await Report.update(user, report)
+            const updatedReport = await Report.week(report.week)
+
+            return res.json(updatedReport)
+        }
+
+        await Report.create(req.session?.user, report)
         const createdReport = await Report.week(report.week)
 
         return res.json(createdReport)
@@ -36,6 +46,15 @@ router.get(
         }
 
         return res.json(report)
+    }),
+)
+
+router.get(
+    '/reports',
+    wrapAsync(async (req, res) => {
+        const reports = await Report.all()
+
+        return res.json(reports)
     }),
 )
 
