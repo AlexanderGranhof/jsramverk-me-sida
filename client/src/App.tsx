@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useContext, Component, ComponentClass } from 'react'
+import React, { FunctionComponent, useState, useContext } from 'react'
 import styles from './App.module.scss'
 import { authContext } from './contexts/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -35,7 +35,7 @@ const PrivateRoute: FunctionComponent<PrivateRouteProps & RouteProps> = ({
 const App: FunctionComponent = () => {
     const [showRegister, setShowRegister] = useState(false)
     const [showSignIn, setShowSignIn] = useState(false)
-    const [auth, setAuth] = useContext(authContext)
+    const [, setAuth] = useContext(authContext)
     const history = useHistory()
 
     const handleMenuClick = async (item: string) => {
