@@ -137,8 +137,6 @@ components:
       properties:
         week:
           type: integer
-        title:
-          type: string
         content:
           type: string
         
@@ -156,8 +154,6 @@ components:
     AboutMeReport:
       type: object
       properties:
-        title:
-          type: string
         content:
           type: string
           
