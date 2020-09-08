@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react'
+import React, { FunctionComponent, useState, useEffect, useCallback } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import styles from './report.module.scss'
 import Button from '../../components/button/button'
@@ -50,24 +50,27 @@ const useEditorCache = () => {
     }, [])
 
     let cachedDocumentObject = safeJSONParse(localStorage.getItem(`cache.editor_documents`), {})
-
-    const loadTextFromReport = (reportName: string) => {
-        let text = cachedDocumentObject[reportName]
-
-        if (!text) {
-            const weekNumber = reportList.findIndex((report) => {
-                return report.toLowerCase() === cachedCurrentReport.toLowerCase()
-            })
-
-            const report = fetchedReports.find((report) => report.week === weekNumber)
-
-            text = report ? report.content : ''
-        }
-
-        return text
-    }
-
     const cachedCurrentReport = localStorage.getItem('cache.editor_report') || 'about'
+
+    const loadTextFromReport = useCallback(
+        (reportName: string) => {
+            let text = cachedDocumentObject[reportName]
+
+            if (text === undefined) {
+                const weekNumber = reportList.findIndex((report) => {
+                    return report.toLowerCase() === cachedCurrentReport.toLowerCase()
+                })
+
+                const report = fetchedReports.find((report) => report.week === weekNumber)
+
+                text = report ? report.content : ''
+            }
+
+            return text
+        },
+        [cachedCurrentReport, cachedDocumentObject, fetchedReports],
+    )
+
     const cachedText = loadTextFromReport(cachedCurrentReport)
 
     const [text, setText] = useState<string>(cachedText)
@@ -81,9 +84,9 @@ const useEditorCache = () => {
         const documents = JSON.stringify(documentsObject)
 
         localStorage.setItem(`cache.editor_documents`, documents)
-        setText(text)
+        cachedDocumentObject = { ...documentsObject }
 
-        cachedDocumentObject = documentsObject
+        setText(text)
     }
 
     const setReportCache = (report: string) => {
@@ -91,7 +94,21 @@ const useEditorCache = () => {
         setReport(report)
     }
 
-    const discardCache = () => {
+    const discardCache = (reportName?: string) => {
+        if (reportName) {
+            const index = reportList.findIndex((reportItem) => {
+                return reportItem.toLowerCase() === reportName.toLowerCase()
+            })
+
+            const foundFetchedReport = fetchedReports.find((fetchedReport) => {
+                return fetchedReport.week === index
+            })
+
+            if (foundFetchedReport) {
+                return setTextCache(foundFetchedReport.content)
+            }
+        }
+
         cachedDocumentObject = reportList.reduce((prev, reportItem, index) => {
             const foundFetchedReport = fetchedReports.find((fetchedReport) => {
                 return fetchedReport.week === index
@@ -110,7 +127,7 @@ const useEditorCache = () => {
 
     useEffect(() => {
         setText(loadTextFromReport(report))
-    }, [report])
+    }, [report, loadTextFromReport])
 
     return [text, report, setTextCache, setReportCache, discardCache] as const
 }
@@ -120,12 +137,15 @@ const ReportView: FunctionComponent = () => {
     const [currentReport, setCurrentReport] = useState(report)
     const [editorLoaded, setEditorLoaded] = useState(false)
 
+    const [isSaving, setIsSaving] = useState(false)
+
     const handleEdit = (text: string) => {
         setTextCache(text)
     }
 
     const handleDiscardChanges = () => {
-        discardCache()
+        console.log(report)
+        discardCache(report)
     }
 
     const setReport = (reportToSet: string) => {
@@ -134,15 +154,21 @@ const ReportView: FunctionComponent = () => {
     }
 
     const handleSave = async () => {
+        setIsSaving(true)
+
         const week = reportList.findIndex((reportName) => {
             return reportName.toLowerCase() === report.toLowerCase()
         })
 
         if (week < 0) {
+            setIsSaving(false)
             return alert('Unable to find the correct report')
         }
 
         await Report.create(text, week)
+
+        discardCache(report)
+        setIsSaving(false)
     }
 
     const EditorSettings = {
@@ -170,8 +196,10 @@ const ReportView: FunctionComponent = () => {
             <div className={styles['editor-page-container']}>
                 <h1>Edit reports</h1>
                 <div className={styles['button-container']}>
-                    <Button onClick={handleSave}>Save</Button>
-                    <Button onClick={handleDiscardChanges} type="danger">
+                    <Button disabled={isSaving} onClick={handleSave}>
+                        Save
+                    </Button>
+                    <Button disabled={isSaving} onClick={handleDiscardChanges} type="danger">
                         Discard changes
                     </Button>
                 </div>
