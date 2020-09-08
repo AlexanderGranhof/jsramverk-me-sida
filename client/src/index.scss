@@ -10,3 +10,6 @@ body {
     font-family: 'Montserrat', sans-serif;
     overflow: hidden;
 }
+
+// Hide tiny mce notification for dev purposes
+.tox-notification {display: none !important;}
