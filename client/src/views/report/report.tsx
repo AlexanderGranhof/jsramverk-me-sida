@@ -94,8 +94,10 @@ const useEditorCache = () => {
         setReport(report)
     }
 
-    const discardCache = (reportName?: string) => {
+    const discardCache = (reportName?: string, saved = false) => {
         if (reportName) {
+            delete cachedDocumentObject[reportName]
+
             const index = reportList.findIndex((reportItem) => {
                 return reportItem.toLowerCase() === reportName.toLowerCase()
             })
@@ -105,9 +107,15 @@ const useEditorCache = () => {
             })
 
             if (foundFetchedReport) {
-                return setTextCache(foundFetchedReport.content)
+                if (saved) {
+                    foundFetchedReport.content = text
+                } else {
+                    setText(foundFetchedReport.content)
+                }
             }
         }
+
+        const initialObject = saved ? { [report]: text } : {}
 
         cachedDocumentObject = reportList.reduce((prev, reportItem, index) => {
             const foundFetchedReport = fetchedReports.find((fetchedReport) => {
@@ -116,12 +124,11 @@ const useEditorCache = () => {
 
             return {
                 ...prev,
-                [reportItem]: foundFetchedReport ? foundFetchedReport.content : '',
+                [reportItem]: foundFetchedReport ? foundFetchedReport.content : text,
             }
-        }, {})
+        }, initialObject)
 
         localStorage.setItem(`cache.editor_documents`, JSON.stringify(cachedDocumentObject))
-
         setText(cachedDocumentObject[report])
     }
 
@@ -144,7 +151,6 @@ const ReportView: FunctionComponent = () => {
     }
 
     const handleDiscardChanges = () => {
-        console.log(report)
         discardCache(report)
     }
 
@@ -167,7 +173,7 @@ const ReportView: FunctionComponent = () => {
 
         await Report.create(text, week)
 
-        discardCache(report)
+        discardCache(report, true)
         setIsSaving(false)
     }
 
