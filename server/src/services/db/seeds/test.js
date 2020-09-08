@@ -27,6 +27,12 @@ exports.seed = async function (knex) {
                 'djupare i react genom att bygga lite mer avancerade applikationer som kräver lite ' +
                 'och att få upp en bra struktur på sin kod och miljö.</p>\n',
         },
+        {
+            week: 1,
+            user_id: 1,
+            content:
+                '<a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/tree/1.0.1">Github</a> <a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/blob/1.0.1/README.md">README</a>',
+        },
     ])
 
     return Promise.all([users, reports])
