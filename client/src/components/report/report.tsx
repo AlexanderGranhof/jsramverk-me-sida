@@ -7,12 +7,11 @@ type MatchParams = {
 }
 
 type ReportData = {
-    title: string
     content?: string
 }
 
 const Kmom01: FunctionComponent<RouteComponentProps<MatchParams>> = ({ match }) => {
-    const [text, setText] = useState<ReportData>({ title: '', content: '' })
+    const [text, setText] = useState<ReportData>({ content: '' })
     const history = useHistory()
 
     const isRoot = history.location.pathname === '/'
@@ -22,16 +21,16 @@ const Kmom01: FunctionComponent<RouteComponentProps<MatchParams>> = ({ match }) 
         const response = await (isRoot ? Report.about() : Report.week(weekNumber))
 
         if (response.status === 404) {
-            return setText({ title: 'This report has not been written yet' })
+            return setText({ content: '<h1>This report has not been written yet</h1>' })
         }
 
         if (!response.ok) {
             return console.warn('unable to fetch report week 1')
         }
 
-        const { title, content } = await response.json()
+        const { content } = await response.json()
 
-        setText({ title, content })
+        setText({ content })
     }
 
     useEffect(() => {
@@ -42,15 +41,7 @@ const Kmom01: FunctionComponent<RouteComponentProps<MatchParams>> = ({ match }) 
         fetchData()
     }, [])
 
-    const { title, content } = text
-    const paragraphs = content?.split('\n')
-
-    return (
-        <div>
-            <h1>{title}</h1>
-            {paragraphs && paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-        </div>
-    )
+    return <div dangerouslySetInnerHTML={{ __html: text.content || '' }}></div>
 }
 
 export default Kmom01
