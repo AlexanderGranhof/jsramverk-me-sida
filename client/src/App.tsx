@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useState, useContext } from 'react'
+import React, { FunctionComponent, useState, useContext, Component, ComponentClass } from 'react'
 import styles from './App.module.scss'
 import { authContext } from './contexts/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { Switch, Route, useHistory } from 'react-router-dom'
+import { Switch, Route, useHistory, RouteProps } from 'react-router-dom'
 import * as User from './services/user'
 import './App.transitions.scss'
 
@@ -13,6 +13,24 @@ import SignIn from './components/signin/signin'
 
 import Main from './views/main/main'
 import ReportEdit from './views/report/report'
+
+type PrivateRouteProps = {
+    component: FunctionComponent<any>
+}
+
+const PrivateRoute: FunctionComponent<PrivateRouteProps & RouteProps> = ({
+    component: Component,
+    ...rest
+}) => {
+    const [{ authenticated }] = useContext(authContext)
+    const history = useHistory()
+
+    if (!authenticated) {
+        history.goBack()
+    }
+
+    return <Route {...rest} render={(props) => (authenticated ? <Component {...props} /> : null)} />
+}
 
 const App: FunctionComponent = () => {
     const [showRegister, setShowRegister] = useState(false)
@@ -42,11 +60,11 @@ const App: FunctionComponent = () => {
                 <TransitionGroup>
                     <CSSTransition
                         key={location.pathname === '/edit' ? 'edit' : 'reports'}
-                        timeout={10000}
+                        timeout={500}
                         classNames="App"
                     >
                         <Switch location={location}>
-                            <Route path="/edit" component={ReportEdit} />
+                            <PrivateRoute path="/edit" component={ReportEdit} />
                             <Route>
                                 <div className={styles['container']}>
                                     {showRegister && (
