@@ -15,6 +15,7 @@ exports.seed = async function (knex) {
             week: 0,
             user_id: 1,
             content:
+                '<h1>Om mig</h1>' +
                 '<p>Hej mitt namn är Alexander Granhof och detta är min me sida för JSRamverk kursen. ' +
                 'När det gäller ramverk så har jag tidigare jobbat mycket med React och Typescript ' +
                 'och det är det jag planerar att använda under kursen.</p>\n' +
