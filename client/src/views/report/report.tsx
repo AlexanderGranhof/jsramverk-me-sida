@@ -46,7 +46,7 @@ const useEditorCache = () => {
 
         const result: FetchedReport[] = await response.json()
 
-        const data = result.reduce(
+        const data: Record<string, string> = result.reduce(
             (prev, row) => ({
                 ...prev,
                 [reportList[row.week]]: row.content,
@@ -54,6 +54,15 @@ const useEditorCache = () => {
             {},
         )
 
+        if (documents[report] === undefined) {
+            const foundReportContent = data[report]
+
+            if (foundReportContent !== undefined) {
+                return setText(foundReportContent)
+            }
+        }
+
+        setText(cachedDocuments[report] || '')
         setFetchedDocuments(data)
     }
 
@@ -105,11 +114,17 @@ const useEditorCache = () => {
         })
     }
 
-    return [text, report, setTextCache, setReportCache, discardCache] as const
+    const resetCache = () => {
+        localStorage.removeItem('editor.documents')
+        setCachedDocuments(safeJSONParse(localStorage.getItem('editor.documents'), {}))
+        fetchDocuments()
+    }
+
+    return [text, report, setTextCache, setReportCache, discardCache, resetCache] as const
 }
 
 const ReportView: FunctionComponent = () => {
-    const [text, report, setTextCache, setReportCache, discardCache] = useEditorCache()
+    const [text, report, setTextCache, setReportCache, discardCache, resetCache] = useEditorCache()
     const [currentReport, setCurrentReport] = useState(report)
     const [editorLoaded, setEditorLoaded] = useState(false)
 
@@ -146,6 +161,11 @@ const ReportView: FunctionComponent = () => {
         setIsSaving(false)
     }
 
+    const handleReset = () => {
+        resetCache()
+        window.location.reload()
+    }
+
     const EditorSettings = {
         plugins: 'autoresize',
         width: '100%',
@@ -177,12 +197,7 @@ const ReportView: FunctionComponent = () => {
                     <Button disabled={isSaving} onClick={handleDiscardChanges} type="danger">
                         Discard changes
                     </Button>
-                    <Button
-                        onClick={() => {
-                            localStorage.removeItem('editor.documents')
-                        }}
-                        size="small"
-                    >
+                    <Button onClick={handleReset} size="small">
                         reset
                     </Button>
                 </div>
