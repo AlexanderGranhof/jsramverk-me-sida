@@ -45,45 +45,49 @@ const useEditorCache = () => {
         const response = await Report.all()
 
         const result: FetchedReport[] = await response.json()
+        const currentReport = report.toLowerCase()
 
-        const data: Record<string, string> = result.reduce(
-            (prev, row) => ({
+        const data: Record<string, string> = result.reduce((prev, row) => {
+            const reportName = reportList[row.week].toLowerCase()
+
+            return {
                 ...prev,
-                [reportList[row.week]]: row.content,
-            }),
-            {},
-        )
+                [reportName]: row.content,
+            }
+        }, {})
 
-        if (documents[report] === undefined) {
-            const foundReportContent = data[report]
+        if (documents[currentReport] === undefined) {
+            const foundReportContent = data[currentReport]
 
             if (foundReportContent !== undefined) {
-                return setText(foundReportContent)
+                setText(foundReportContent)
             }
         }
 
-        setText(cachedDocuments[report] || '')
+        setText(cachedDocuments[currentReport] || '')
         setFetchedDocuments(data)
     }
 
     useEffect(() => {
         fetchDocuments()
-    }, [setFetchedDocuments])
+    }, [])
 
     useEffect(() => {
-        if (documents[report] === undefined) {
-            const foundReportContent = fetchedDocuments[report]
+        const reportToSet = report.toLowerCase()
+
+        if (cachedDocuments[reportToSet] === undefined) {
+            const foundReportContent = fetchedDocuments[reportToSet]
 
             if (foundReportContent !== undefined) {
                 return setText(foundReportContent)
             }
         }
 
-        setText(cachedDocuments[report] || '')
-    }, [report])
+        setText(cachedDocuments[reportToSet] || '')
+    }, [report, fetchedDocuments])
 
     const setTextCache = (text: string, reportToSet?: string) => {
-        const actualReport = reportToSet ? reportToSet : report
+        const actualReport = reportToSet ? reportToSet.toLowerCase() : report.toLowerCase()
 
         const newDocuments = {
             ...cachedDocuments,
@@ -97,20 +101,24 @@ const useEditorCache = () => {
     }
 
     const setReportCache = (report: string) => {
-        setReport(report)
-        localStorage.setItem('editor.report', report)
+        const reportToSet = report.toLowerCase()
+
+        setReport(reportToSet)
+        localStorage.setItem('editor.report', reportToSet)
     }
 
     const discardCache = (report: string, saved = false) => {
-        if (!saved) {
-            const textToSet = fetchedDocuments[report] || ''
+        const reportToDiscard = report.toLowerCase()
 
-            return setTextCache(textToSet, report)
+        if (!saved) {
+            const textToSet = fetchedDocuments[reportToDiscard] || ''
+
+            return setTextCache(textToSet, reportToDiscard)
         }
 
         setFetchedDocuments({
             ...fetchedDocuments,
-            [report]: text,
+            [reportToDiscard]: text,
         })
     }
 
