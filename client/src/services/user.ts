@@ -18,6 +18,10 @@ export const login = (username: string, password: string) => {
     })
 }
 
+export const validate = () => {
+    return apiFetch('validate/cookie')
+}
+
 export const logout = () => {
     return apiFetch('logout', {})
 }
