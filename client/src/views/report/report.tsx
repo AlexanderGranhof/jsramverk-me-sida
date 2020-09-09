@@ -33,108 +33,77 @@ const safeJSONParse = (data: any, fallback: any) => {
 }
 
 const useEditorCache = () => {
-    const [fetchedReports, setFetchedReports] = useState<FetchedReport[]>([])
+    const recentReport = localStorage.getItem('editor.report') || 'about'
+    const documents = safeJSONParse(localStorage.getItem('editor.documents'), {})
 
-    const fetchAllReports = async () => {
+    const [cachedDocuments, setCachedDocuments] = useState(documents)
+    const [report, setReport] = useState(recentReport)
+    const [text, setText] = useState(documents[report] || '')
+    const [fetchedDocuments, setFetchedDocuments] = useState<Record<string, string>>({})
+
+    const fetchDocuments = async () => {
         const response = await Report.all()
 
-        if (!response.ok) {
-            return console.error('unable to fetch reports')
-        }
+        const result: FetchedReport[] = await response.json()
 
-        setFetchedReports(await response.json())
+        const data = result.reduce(
+            (prev, row) => ({
+                ...prev,
+                [reportList[row.week]]: row.content,
+            }),
+            {},
+        )
+
+        setFetchedDocuments(data)
     }
 
     useEffect(() => {
-        fetchAllReports()
-    }, [])
+        fetchDocuments()
+    }, [setFetchedDocuments])
 
-    let cachedDocumentObject = safeJSONParse(localStorage.getItem(`cache.editor_documents`), {})
-    const cachedCurrentReport = localStorage.getItem('cache.editor_report') || 'about'
+    useEffect(() => {
+        if (documents[report] === undefined) {
+            const foundReportContent = fetchedDocuments[report]
 
-    const loadTextFromReport = useCallback(
-        (reportName: string) => {
-            let text = cachedDocumentObject[reportName]
-
-            if (text === undefined) {
-                const weekNumber = reportList.findIndex((report) => {
-                    return report.toLowerCase() === cachedCurrentReport.toLowerCase()
-                })
-
-                const report = fetchedReports.find((report) => report.week === weekNumber)
-
-                text = report ? report.content : ''
+            if (foundReportContent !== undefined) {
+                return setText(foundReportContent)
             }
-
-            return text
-        },
-        [cachedCurrentReport, cachedDocumentObject, fetchedReports],
-    )
-
-    const cachedText = loadTextFromReport(cachedCurrentReport)
-
-    const [text, setText] = useState<string>(cachedText)
-    const [report, setReport] = useState<string>(cachedCurrentReport)
-
-    const setTextCache = (text: string) => {
-        const documentsObject = {
-            ...cachedDocumentObject,
-            [report]: text,
         }
-        const documents = JSON.stringify(documentsObject)
 
-        localStorage.setItem(`cache.editor_documents`, documents)
-        cachedDocumentObject = { ...documentsObject }
+        setText(cachedDocuments[report] || '')
+    }, [report])
+
+    const setTextCache = (text: string, reportToSet?: string) => {
+        const actualReport = reportToSet ? reportToSet : report
+
+        const newDocuments = {
+            ...cachedDocuments,
+            [actualReport]: text,
+        }
+
+        setCachedDocuments(newDocuments)
+        localStorage.setItem('editor.documents', JSON.stringify(newDocuments))
 
         setText(text)
     }
 
     const setReportCache = (report: string) => {
-        localStorage.setItem('cache.editor_report', report)
         setReport(report)
+        localStorage.setItem('editor.report', report)
     }
 
-    const discardCache = (reportName?: string, saved = false) => {
-        if (reportName) {
-            delete cachedDocumentObject[reportName]
+    const discardCache = (report: string, saved = false) => {
+        if (!saved) {
+            const textToSet = fetchedDocuments[report] || ''
 
-            const index = reportList.findIndex((reportItem) => {
-                return reportItem.toLowerCase() === reportName.toLowerCase()
-            })
-
-            const foundFetchedReport = fetchedReports.find((fetchedReport) => {
-                return fetchedReport.week === index
-            })
-
-            if (foundFetchedReport) {
-                if (saved) {
-                    foundFetchedReport.content = text
-                } else {
-                    setText(foundFetchedReport.content)
-                }
-            }
+            return setTextCache(textToSet, report)
         }
 
-        const initialObject = saved ? { [report]: text } : {}
-
-        cachedDocumentObject = reportList.reduce((prev, reportItem, index) => {
-            const foundFetchedReport = fetchedReports.find((fetchedReport) => {
-                return fetchedReport.week === index
-            })
-
-            return {
-                ...prev,
-                [reportItem]: foundFetchedReport ? foundFetchedReport.content : text,
-            }
-        }, initialObject)
-
-        localStorage.setItem(`cache.editor_documents`, JSON.stringify(cachedDocumentObject))
-        setText(cachedDocumentObject[report])
+        setFetchedDocuments({
+            ...fetchedDocuments,
+            [report]: text,
+        })
     }
-
-    useEffect(() => {
-        setText(loadTextFromReport(report))
-    }, [report, loadTextFromReport])
 
     return [text, report, setTextCache, setReportCache, discardCache] as const
 }
@@ -207,6 +176,14 @@ const ReportView: FunctionComponent = () => {
                     </Button>
                     <Button disabled={isSaving} onClick={handleDiscardChanges} type="danger">
                         Discard changes
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            localStorage.removeItem('editor.documents')
+                        }}
+                        size="small"
+                    >
+                        reset
                     </Button>
                 </div>
                 <div className={styles['editor-container']}>
