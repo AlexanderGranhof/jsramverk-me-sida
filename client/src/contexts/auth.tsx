@@ -1,4 +1,5 @@
-import React, { createContext, FunctionComponent, useState } from 'react'
+import React, { createContext, FunctionComponent, useState, useEffect } from 'react'
+import * as User from '../services/user'
 
 type AuthContextType = {
     username: string
@@ -26,6 +27,16 @@ const authContext = createContext<[AuthContextType, (data: AuthContextType) => v
 
 const AuthProvider: FunctionComponent = ({ children }) => {
     const [userState, setState] = useState(initialContext)
+
+    const verifyAuth = async () => {
+        const response = await User.validate()
+
+        setState({ ...userState, authenticated: response.status === 200 })
+    }
+
+    useEffect(() => {
+        verifyAuth()
+    }, [])
 
     const setUserState = (data: AuthContextType) => {
         localStorage.setItem('context.auth', JSON.stringify(data))
