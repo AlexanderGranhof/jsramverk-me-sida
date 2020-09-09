@@ -17,6 +17,6 @@ export default interface CreatedReportModel extends ReportModel {
 export const ReportSchema = joi.object({
     // title: joi.string().required(),
     week: joi.number().required(),
-    content: joi.string().required(),
+    content: joi.string().required().allow(''),
     // user_id: joi.number().required(),
 })
