@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    client:
+        build: ./client
+        stdin_open: true
+        ports: 
+            - 3000:3000
+        volumes:
+            - ./client/build:/opt/client/build
+
+    server:
+        build: ./server
+        ports:
+            - 3001:3001
