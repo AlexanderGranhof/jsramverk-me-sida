@@ -8,7 +8,6 @@ COPY package*.json ./
 COPY tsconfig.json .
 COPY src/ ./src/
 COPY public/ ./public/
-COPY .env .
 
 RUN npm i
 
