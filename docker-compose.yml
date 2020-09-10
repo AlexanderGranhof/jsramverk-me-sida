@@ -4,12 +4,23 @@ services:
     client:
         build: ./client
         stdin_open: true
-        ports: 
-            - 3000:3000
         volumes:
-            - ./client/build:/opt/client/build
+            - app-volume:/opt/client/build
+            - ./client/.env:/opt/client/.env
 
     server:
         build: ./server
         ports:
             - 3001:3001
+
+    nginx:
+        image: nginx:1.19
+        ports: 
+            - 80:80
+        links:
+            - server:server
+        volumes:
+            - app-volume:/opt/client/build
+            - ./nginx/conf.d/:/etc/nginx/conf.d
+volumes: 
+    app-volume:
