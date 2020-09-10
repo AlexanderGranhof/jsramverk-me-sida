@@ -1,4 +1,5 @@
-const host = `${window.location.protocol}//${window.location.hostname}:3001`
+const port = window.location.port
+const host = `${window.location.protocol}//${window.location.hostname}${port ? ':' + port : ''}/api`
 
 export default (path = '', body?: Record<string, any>) => {
     const url = path.startsWith('/') ? host + path : `${host}/${path}`
