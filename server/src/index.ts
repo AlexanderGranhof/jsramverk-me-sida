@@ -38,10 +38,10 @@ app.use(
 
 /* API routes */
 
-app.use(RootRoute)
-app.use(UserRoute)
-app.use(ReportRoute)
-app.use(ValidationRoute)
+app.use('/api', RootRoute)
+app.use('/api', UserRoute)
+app.use('/api', ReportRoute)
+app.use('/api', ValidationRoute)
 
 /* Error handler middleware */
 
