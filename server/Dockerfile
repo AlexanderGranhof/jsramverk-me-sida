@@ -10,4 +10,6 @@ COPY src ./src
 
 RUN npm i
 
+RUN npm run db:init
+
 ENTRYPOINT npm run start
