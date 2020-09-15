@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import crypto from 'crypto'
 import session from 'express-session'
 import cors from 'cors'
+import path from 'path'
 import swagger from './swagger/middleware'
 import sessionFileStore from 'session-file-store'
 
@@ -15,7 +16,12 @@ import UserRoute from './api/routes/user'
 import ReportRoute from './api/routes/report'
 import ValidationRoute from './api/routes/validation'
 
-dotenv.config() // Load env variables from .env file
+import * as env from './services/env'
+
+const envPath = path.resolve(__dirname, '../.env')
+
+env.createIfNotExists(envPath)
+dotenv.config({ path: envPath }) // Load env variables from .env file
 
 const devOrigin = 'http://localhost:3000'
 const prodOrigin = 'https://algn18.me'
@@ -25,6 +31,11 @@ const app = express()
 const port = process.env.PORT || 3001
 const isProd = process.env.NODE_ENV === 'production'
 const loggingMode = isProd ? 'combined' : 'dev'
+const sessionSecret = process.env.SESSION_SECRET || ''
+
+if (sessionSecret.length < 16) {
+    throw new Error('Session secret is not a string or is shorter than 16')
+}
 
 app.set('trust proxy', 1) // trust nginx
 
@@ -36,7 +47,7 @@ app.use('/docs', ...swagger)
 app.use(
     session({
         store: new FileStore(),
-        secret: crypto.randomBytes(64).toString('hex'),
+        secret: sessionSecret,
         resave: false,
         saveUninitialized: true,
         cookie: { secure: isProd },
