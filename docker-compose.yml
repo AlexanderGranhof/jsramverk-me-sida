@@ -5,21 +5,9 @@ services:
         build: ./client
         stdin_open: true
         volumes:
-            - app-volume:/opt/client/build
+            - ./client/build:/opt/client/build
 
     server:
         build: ./server
         ports:
             - 3001:3001
-
-    nginx:
-        image: nginx:1.19
-        ports: 
-            - 3000:80
-        links:
-            - server:server
-        volumes:
-            - app-volume:/opt/client/build
-            - ./nginx/conf.d/:/etc/nginx/conf.d
-volumes: 
-    app-volume:
