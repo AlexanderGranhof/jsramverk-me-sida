@@ -16,14 +16,18 @@ import ValidationRoute from './api/routes/validation'
 
 dotenv.config() // Load env variables from .env file
 
+const devOrigin = 'http://localhost:3000'
+const prodOrigin = 'https://algn18.me'
+
 const app = express()
 const port = process.env.PORT || 3001
-const loggingMode = process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
+const isProd = process.env.NODE_ENV === 'production'
+const loggingMode = isProd ? 'combined' : 'dev'
 
 app.set('trust proxy', 1) // trust nginx
 
 /* Request pre-processor middleware */
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+app.use(cors({ origin: isProd ? prodOrigin : devOrigin, credentials: true }))
 app.use(express.json())
 app.use(morgan(loggingMode))
 app.use('/docs', ...swagger)
@@ -32,7 +36,7 @@ app.use(
         secret: crypto.randomBytes(64).toString('hex'),
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: false },
+        cookie: { secure: isProd },
     }),
 )
 
