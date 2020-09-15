@@ -6,6 +6,7 @@ import crypto from 'crypto'
 import session from 'express-session'
 import cors from 'cors'
 import swagger from './swagger/middleware'
+import sessionFileStore from 'session-file-store'
 
 import { HttpErrorHandler, JoiErrorHandler, SqliteErrorHandler } from './api/middleware/error'
 
@@ -18,6 +19,7 @@ dotenv.config() // Load env variables from .env file
 
 const devOrigin = 'http://localhost:3000'
 const prodOrigin = 'https://algn18.me'
+const FileStore = sessionFileStore(session)
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -33,6 +35,7 @@ app.use(morgan(loggingMode))
 app.use('/docs', ...swagger)
 app.use(
     session({
+        store: new FileStore(),
         secret: crypto.randomBytes(64).toString('hex'),
         resave: false,
         saveUninitialized: true,
