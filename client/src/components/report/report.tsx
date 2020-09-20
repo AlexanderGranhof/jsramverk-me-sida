@@ -41,7 +41,12 @@ const Kmom01: FunctionComponent<RouteComponentProps<MatchParams>> = ({ match }) 
         fetchData()
     }, [])
 
-    return <div dangerouslySetInnerHTML={{ __html: text.content || '' }}></div>
+    return (
+        <div
+            className="page-enter-done"
+            dangerouslySetInnerHTML={{ __html: text.content || '' }}
+        ></div>
+    )
 }
 
 export default Kmom01

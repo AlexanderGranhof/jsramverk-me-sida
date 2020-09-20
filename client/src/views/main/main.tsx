@@ -12,7 +12,7 @@ const Main: FunctionComponent = () => {
             <Route
                 render={({ location }) => (
                     <TransitionGroup>
-                        <CSSTransition key={location.pathname} timeout={5000} classNames="page">
+                        <CSSTransition key={location.pathname} timeout={500} classNames="page">
                             <Switch location={location}>
                                 <Route exact path="/" component={Report} />
                                 <Route path="/reports/week/:weekNumber" component={Report} />

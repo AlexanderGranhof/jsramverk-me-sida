@@ -9,6 +9,11 @@
     transition: all 500ms ease-in-out;
 }
 
+.page-enter-done {
+    overflow-y: auto;
+    max-height: 650px;
+}
+
 .page-exit {
     position: absolute;
     top: 40px;
