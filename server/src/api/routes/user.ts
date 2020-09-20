@@ -1,23 +1,21 @@
 import { Router } from 'express'
 import { wrapAsync } from '../middleware/async'
-import { UserSchema } from '../../models/user'
+import { UserSchema, UserModel } from '../../models/user'
 import * as User from '../../services/user'
+import { generateJWT, removeJWT } from '../../services/jwt'
+import { authenticate } from '../middleware/auth'
 
 const router = Router()
 
 router.post(
     '/register',
     wrapAsync(async (req, res) => {
-        const user = await UserSchema.validateAsync(req.body)
+        const user: UserModel = await UserSchema.validateAsync(req.body)
 
         await User.create(user)
-        const userDBObject = await User.validate(user)
+        const userDBObject = await User.get(user.username)
 
-        if (!req.session) {
-            return res.status(500).send('undefined session')
-        }
-
-        req.session.user = userDBObject
+        generateJWT(res, userDBObject)
 
         res.status(201).json({ username: user.username })
     }),
@@ -26,7 +24,8 @@ router.post(
 router.post(
     '/login',
     wrapAsync(async (req, res) => {
-        console.log(req.session)
+        console.log(req.signedCookies)
+
         const user = await UserSchema.validateAsync(req.body)
         const userDBObject = await User.validate(user)
 
@@ -34,24 +33,16 @@ router.post(
             return res.sendStatus(401)
         }
 
-        if (!req.session) {
-            return res.status(500).send('undefined session')
-        }
-
-        req.session.user = userDBObject
+        generateJWT(res, userDBObject)
 
         return res.status(200).json({ username: user.username })
     }),
 )
 
 router.post('/logout', (req, res) => {
-    if (!req.session) {
-        return res.status(500).send('undefined session')
-    }
+    removeJWT(res)
 
-    req.session.destroy((err) => {
-        return res.status(err ? 500 : 200).send(err ? err : 'ok')
-    })
+    return res.status(200).send()
 })
 
 export default router

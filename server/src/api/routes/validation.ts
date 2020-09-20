@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { wrapAsync } from '../middleware/async'
 import * as User from '../../services/user'
+import { authenticate } from '../middleware/auth'
 
 const router = Router()
 
@@ -17,12 +18,8 @@ router.get(
     }),
 )
 
-router.get('/validate/cookie', (req, res) => {
-    if (!req.session) {
-        return res.status(500).send('undefined session')
-    }
-
-    if (req.session.user) {
+router.get('/validate/cookie', authenticate, (req, res) => {
+    if (!!req.jwtBody) {
         return res.status(200)
     }
 

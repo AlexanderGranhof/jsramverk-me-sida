@@ -1,6 +1,4 @@
-FROM node:13
-
-RUN mkdir /opt/server
+FROM node:14
 
 WORKDIR /opt/server
 

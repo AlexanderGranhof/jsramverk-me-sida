@@ -1,6 +1,4 @@
-FROM node:13
-
-RUN mkdir /opt/client
+FROM node:14
 
 WORKDIR /opt/client
 
@@ -9,6 +7,6 @@ COPY tsconfig.json .
 COPY src/ ./src/
 COPY public/ ./public/
 
-RUN npm i
+RUN npm install
 
 ENTRYPOINT npm run build

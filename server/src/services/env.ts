@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import fs from 'fs'
 
 const defaultEnvPath = path.resolve(__dirname, '../../.env')
-const sessionKey = 'SESSION_SECRET'
+const sessionKey = 'JWT_SECRET'
 
 export const createIfNotExists = (path?: string) => {
     const envPath = path ?? defaultEnvPath

@@ -1,15 +1,26 @@
 import { Response, NextFunction, Request } from 'express'
-import * as User from '../../services/user'
-import { CreatedUserModel } from '../../models/user'
+import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET || ''
+
+if (JWT_SECRET.length < 16) {
+    throw new Error("env 'JWT_SECRET' length is less than 16")
+}
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-    const user: CreatedUserModel | undefined = req?.session?.user
+    const token = req.signedCookies.token
 
-    if (!user) {
-        return res.sendStatus(403)
+    if (!token) {
+        return res.status(403).send('missing signed token cookie')
     }
 
-    User.validate(user)
-        .then(() => next())
-        .catch(() => res.sendStatus(401))
+    jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+        if (err) {
+            return res.status(400).send('invalid jwt')
+        }
+
+        req.jwtBody = decoded
+
+        return next()
+    })
 }
