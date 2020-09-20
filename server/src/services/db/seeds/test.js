@@ -35,7 +35,7 @@ exports.seed = async function (knex) {
                 '<a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/tree/1.0.1">Github</a> <a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/blob/1.0.1/README.md">README</a>',
         },
         {
-            week: 1,
+            week: 2,
             user_id: 2,
             content:
                 '<h1>Driftssättning av algn18.me</h1>' +
