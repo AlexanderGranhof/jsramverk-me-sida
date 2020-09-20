@@ -4,6 +4,7 @@ import * as Report from '../../services/report'
 import { HttpBadRequest } from '../../errors/http'
 import { ReportSchema, IncomingReportModel } from '../../models/report'
 import { authenticate } from '../middleware/auth'
+import { CreatedUserModel } from '../../models/user'
 
 const router = Router()
 
@@ -12,7 +13,7 @@ router.post(
     authenticate,
     wrapAsync(async (req, res) => {
         const report: IncomingReportModel = await ReportSchema.validateAsync(req.body)
-        const user = req.session?.user
+        const user = req.jwtBody as CreatedUserModel
 
         const exists = !!(await Report.week(report.week))
 
@@ -23,7 +24,7 @@ router.post(
             return res.json(updatedReport)
         }
 
-        await Report.create(req.session?.user, report)
+        await Report.create(req.jwtBody as CreatedUserModel, report)
         const createdReport = await Report.week(report.week)
 
         return res.json(createdReport)
