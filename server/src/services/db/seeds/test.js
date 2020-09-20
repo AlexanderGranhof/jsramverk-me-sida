@@ -34,6 +34,15 @@ exports.seed = async function (knex) {
             content:
                 '<a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/tree/1.0.1">Github</a> <a href="https://github.com/AlexanderGranhof/jsramverk-me-sida/blob/1.0.1/README.md">README</a>',
         },
+        {
+            week: 1,
+            user_id: 2,
+            content:
+                '<h1>Driftssättning av algn18.me</h1>' +
+                '<p>För detta kursmomentet har jag faktiskt använt nästan alla av dessa verktygen sedan tidigare. Nginx använder jag nästan alltid när jag bygger något med docker. DigitalOcean har jag redan 2 konton, nu blev det 3. Fail2Ban har jag alltid installerat som standard. Samt med pm2 har jag också testat tidgare, men jag valde att köra med Docker istället</p>' +
+                '<p>Det jag lärde mig mest var att man kunde sätta automatiska uppdateringar på sina linux paket. Det visste jag inte om tidigare, samt fick jag lära mig bättre metoder att deploya React med docker i molnet. Men annars gick allt smidigt. Juste certbot har man också använt tidigare for att skaffa gratis SSL. Har använt bokstavligen allt sedan tidigare.</p>' +
+                '<p>En sista sak att nämna, jag funderade lite på om man borde använda JWT istället och har kikat pa hur man kan implementera JWT på olika sätt. Jag visste inte om att man kunde spara den i en cookie där JS kunde inte komma åt den. Efter jag lärde mig det sa har jag byggt om servern så den nu kör pa JWT.</p>',
+        },
     ])
 
     return Promise.all([users, reports])
