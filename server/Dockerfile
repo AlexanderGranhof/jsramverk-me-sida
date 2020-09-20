@@ -1,7 +1,5 @@
 FROM node:14
 
-RUN mkdir /opt/server
-
 WORKDIR /opt/server
 
 COPY package*.json ./

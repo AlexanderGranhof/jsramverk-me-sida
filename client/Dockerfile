@@ -1,7 +1,5 @@
 FROM node:14
 
-RUN mkdir /opt/client
-
 WORKDIR /opt/client
 
 COPY package*.json ./
