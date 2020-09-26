@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "jest --collect-coverage",
+    "test": "jest --collect-coverage src",
+    "test:integration": "jest --collect-coverage src/api/integration",
     "start": "node build/index.js",
     "db:init": "knex --knexfile 'src/services/db/knexfile.js' migrate:latest",
     "db:seed": "knex --knexfile 'src/services/db/knexfile.js' seed:run"
@@ -15,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "bcrypt": "^5.0.0",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.5",
@@ -28,6 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.5",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1",
     "session-file-store": "^1.4.0",
     "sqlite3": "^5.0.0",
     "swagger-ui-express": "^4.1.4",
