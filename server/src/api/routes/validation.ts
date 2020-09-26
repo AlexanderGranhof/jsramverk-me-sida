@@ -20,7 +20,7 @@ router.get(
 
 router.get('/validate/cookie', authenticate, (req, res) => {
     if (!!req.jwtBody) {
-        return res.status(200)
+        return res.sendStatus(200)
     }
 
     return res.sendStatus(401)

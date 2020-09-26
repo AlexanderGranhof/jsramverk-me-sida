@@ -24,8 +24,6 @@ router.post(
 router.post(
     '/login',
     wrapAsync(async (req, res) => {
-        console.log(req.signedCookies)
-
         const user = await UserSchema.validateAsync(req.body)
         const userDBObject = await User.validate(user)
 
@@ -33,7 +31,9 @@ router.post(
             return res.sendStatus(401)
         }
 
-        generateJWT(res, userDBObject)
+        const { password, ...rest } = userDBObject
+
+        generateJWT(res, rest)
 
         return res.status(200).json({ username: user.username })
     }),
