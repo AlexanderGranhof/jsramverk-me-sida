@@ -48,7 +48,10 @@ const useEditorCache = () => {
         const currentReport = report.toLowerCase()
 
         const data: Record<string, string> = result.reduce((prev, row) => {
-            const reportName = reportList[row.week].toLowerCase()
+            const reportName =
+                row.week <= reportList.length
+                    ? reportList[row.week].toLowerCase()
+                    : `Report ${row.week}`
 
             return {
                 ...prev,
