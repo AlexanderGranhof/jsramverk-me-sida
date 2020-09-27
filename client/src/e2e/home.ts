@@ -1,13 +1,14 @@
 import { expect } from 'chai'
-import createDriver, { signIn } from './driver'
+import createDriver, { signIn, domain } from './driver'
 import { By } from 'selenium-webdriver'
 
 describe('Home view', () => {
     beforeEach(async function () {
+        this.timeout(10000)
         this.driver = await createDriver()
         this.signIn = signIn(this.driver)
 
-        await this.driver.navigate().to('http://localhost:3000')
+        await this.driver.navigate().to(domain)
     })
 
     afterEach(function () {
@@ -15,6 +16,8 @@ describe('Home view', () => {
     })
 
     it('can load home view', async function () {
+        this.timeout(10000)
+
         const title = await this.driver.findElement(By.tagName('title'))
         const body = await this.driver.findElement(By.tagName('body'))
 
@@ -23,6 +26,8 @@ describe('Home view', () => {
     })
 
     it('can sign in', async function () {
+        this.timeout(10000)
+
         await this.signIn()
 
         const signOut = await this.driver.findElement(By.css('nav li:last-child'))
@@ -31,6 +36,8 @@ describe('Home view', () => {
     })
 
     it('can load reports', async function () {
+        this.timeout(10000)
+
         const [home, kmom01] = await this.driver.findElements(By.css('[class^="nav_list"] a '))
         const report = () => this.driver.findElement(By.css('[class^="main_content"] > div > div'))
 

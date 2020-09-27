@@ -33,6 +33,7 @@ const PrivateRoute: FunctionComponent<PrivateRouteProps & RouteProps> = ({
 }
 
 const App: FunctionComponent = () => {
+    console.log(process.env)
     const [showRegister, setShowRegister] = useState(false)
     const [showSignIn, setShowSignIn] = useState(false)
     const [, setAuth] = useContext(authContext)

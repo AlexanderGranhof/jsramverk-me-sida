@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import createDriver, { signIn } from './driver'
+import createDriver, { signIn, domain } from './driver'
 import { By, WebElement, Key } from 'selenium-webdriver'
 
 describe('report view', function () {
@@ -9,7 +9,7 @@ describe('report view', function () {
         this.driver = await createDriver()
         this.signIn = signIn(this.driver)
 
-        await this.driver.navigate().to('http://localhost:3000')
+        await this.driver.navigate().to(domain)
 
         await this.signIn()
 
@@ -24,6 +24,8 @@ describe('report view', function () {
     })
 
     it('can load reports view', async function () {
+        this.timeout(10000)
+
         const iframe = await this.driver.findElement(By.tagName('iframe'))
 
         expect(iframe instanceof WebElement).to.be.true

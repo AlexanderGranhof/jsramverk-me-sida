@@ -1,6 +1,8 @@
-import webdriver, { WebDriver, By } from 'selenium-webdriver'
-import chrome from 'selenium-webdriver/chrome'
+import webdriver, { WebDriver, By, Key } from 'selenium-webdriver'
+import firefox from 'selenium-webdriver/firefox'
 import { Context } from 'mocha'
+
+export const domain = 'https://algn18.me'
 
 export default async () => {
     const screen = {
@@ -8,10 +10,10 @@ export default async () => {
         height: 1080,
     }
 
-    const chromeOptions = new chrome.Options().headless().windowSize(screen)
+    const firefoxOptions = new firefox.Options().headless().windowSize(screen)
     const driver = new webdriver.Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(chromeOptions)
+        .forBrowser('firefox')
+        .setFirefoxOptions(firefoxOptions)
         .build()
 
     return driver
@@ -29,7 +31,7 @@ export const signIn = (driver: WebDriver) => async () => {
     await password.sendKeys('admin')
     await submit.click()
 
-    await driver.sleep(500)
+    await driver.sleep(1000)
 }
 
 declare module 'mocha' {
