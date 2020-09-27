@@ -12,4 +12,4 @@ before_install:
 
 script:
   - bash test-client.bash
-  - bash server-client.bash
+  - bash test-server.bash
