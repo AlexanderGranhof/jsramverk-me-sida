@@ -1,0 +1,58 @@
+version: '3.1'
+
+networks: 
+    test:
+
+services:
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.test
+        tty: true
+        networks:
+            test:
+        ports:
+            - 3000:3000
+        depends_on: 
+            - server
+        volumes: 
+            - ./client/src:/opt/client/src
+
+    server:
+        build: ./server
+        entrypoint: npm run dev
+        ports:
+            - 3001:3001
+        networks:
+            test:
+        volumes: 
+            - ./server/src:/opt/server/src
+
+    test-client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.test
+        entrypoint: npm run test
+        stdin_open: true
+        tty: true
+        environment: 
+            - TEST_DOMAIN=http://client:3000
+        networks:
+            test:
+        links: 
+            - client
+        depends_on:
+            - server
+            - client
+        volumes: 
+            - ./client/src:/opt/client/src
+
+    test-server:
+        build: ./server
+        entrypoint: npm run test
+        environment: 
+            - TEST_DOMAIN=http://server:3001
+        links: 
+            - server
+        networks:
+            test:

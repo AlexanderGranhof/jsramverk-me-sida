@@ -4,6 +4,7 @@ WORKDIR /opt/server
 
 COPY package*.json ./
 COPY tsconfig.json .
+COPY jest.config.js .
 COPY src ./src
 
 RUN npm i
