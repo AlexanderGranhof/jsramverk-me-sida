@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/AlexanderGranhof/jsramverk-me-sida.svg?branch=master)](https://travis-ci.org/AlexanderGranhof/jsramverk-me-sida)
+[![Scrutinizer Status](https://scrutinizer-ci.com/g/AlexanderGranhof/jsramverk-me-sida/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AlexanderGranhof/jsramverk-me-sida/?branch=master)
+
 # JSRamverk-me-sida
 This repository is used for the course DV1612 at Blekinge tekniska högskola where the focus of the course is Javascript frameworks.
 
