@@ -56,11 +56,11 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
             event.preventDefault()
         }
 
-        // const valid = await verifyFields()
+        const valid = await verifyFields()
 
-        // if (!valid) {
-        //     return
-        // }
+        if (!valid) {
+            return
+        }
 
         const response = await User.login(username, password)
 
@@ -93,7 +93,6 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                                 name="username"
                                 type="text"
                                 onInput={(value) => {
-                                    handleSubmit()
                                     setUsername(value)
                                     clearUsernameErrors()
                                 }}
@@ -105,14 +104,13 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                                 name="password"
                                 type="password"
                                 onInput={(value) => {
-                                    handleSubmit()
                                     setPassword(value)
                                     clearPasswordErrors()
                                 }}
                                 errorText={errors.password}
                                 showError={!!errors.password}
                             />
-                            <Button onClick={() => handleSubmit()} className={styles['button']}>
+                            <Button onClick={handleSubmit} className={styles['button']}>
                                 Sign in
                             </Button>
                         </div>
