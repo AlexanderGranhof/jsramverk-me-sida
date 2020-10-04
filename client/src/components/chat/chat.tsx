@@ -5,9 +5,14 @@ import './chat.transitions.scss'
 import { useChat } from '../../hooks/chat'
 import Button from '../button/button'
 import dayjs from 'dayjs'
+import ChatIcon from './icon'
 
 const ChatButton: FunctionComponent<React.HTMLAttributes<HTMLDivElement>> = (props) => {
-    return <div {...props} className={styles['button']} />
+    return (
+        <div {...props} className={styles['button']}>
+            <ChatIcon />
+        </div>
+    )
 }
 
 type ChatProps = {
