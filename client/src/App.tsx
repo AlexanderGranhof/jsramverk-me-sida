@@ -10,6 +10,7 @@ import Nav from './components/nav/nav'
 import TopNav from './components/nav/top/top'
 import Register from './components/register/register'
 import SignIn from './components/signin/signin'
+import Chat from './components/chat/chat'
 
 import Main from './views/main/main'
 import ReportEdit from './views/report/report'
@@ -56,32 +57,37 @@ const App: FunctionComponent = () => {
     }
 
     return (
-        <Route
-            render={({ location }) => (
-                <TransitionGroup>
-                    <CSSTransition
-                        key={location.pathname === '/edit' ? 'edit' : 'reports'}
-                        timeout={500}
-                        classNames="App"
-                    >
-                        <Switch location={location}>
-                            <PrivateRoute path="/edit" component={ReportEdit} />
-                            <Route>
-                                <div className={styles['container']}>
-                                    {showRegister && (
-                                        <Register onClose={() => setShowRegister(false)} />
-                                    )}
-                                    {showSignIn && <SignIn onClose={() => setShowSignIn(false)} />}
-                                    <TopNav onClick={handleMenuClick} />
-                                    <Nav />
-                                    <Main />
-                                </div>
-                            </Route>
-                        </Switch>
-                    </CSSTransition>
-                </TransitionGroup>
-            )}
-        />
+        <React.Fragment>
+            <Chat />
+            <Route
+                render={({ location }) => (
+                    <TransitionGroup>
+                        <CSSTransition
+                            key={location.pathname === '/edit' ? 'edit' : 'reports'}
+                            timeout={500}
+                            classNames="App"
+                        >
+                            <Switch location={location}>
+                                <PrivateRoute path="/edit" component={ReportEdit} />
+                                <Route>
+                                    <div className={styles['container']}>
+                                        {showRegister && (
+                                            <Register onClose={() => setShowRegister(false)} />
+                                        )}
+                                        {showSignIn && (
+                                            <SignIn onClose={() => setShowSignIn(false)} />
+                                        )}
+                                        <TopNav onClick={handleMenuClick} />
+                                        <Nav />
+                                        <Main />
+                                    </div>
+                                </Route>
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
+                )}
+            />
+        </React.Fragment>
     )
 }
 
