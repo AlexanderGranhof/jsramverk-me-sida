@@ -21,4 +21,4 @@ services:
             - mongodb
 
     mongodb:
-        image: mongodb:3.6-xenial
+        image: mongo:3.6-xenial
