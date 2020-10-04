@@ -1,0 +1,35 @@
+.chat-enter {
+    display: block;
+    opacity: 0;
+    transform: scale(0);
+
+}
+
+.chat-enter-active {
+    transform-origin: bottom right;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.chat-enter-done {
+    display: block;
+    opacity: 1;
+}
+
+.chat-exit {
+    transform: scale(1);
+    display: block;
+    opacity: 1;
+}
+
+.chat-exit-active {
+    transform-origin: bottom right;
+    transform: scale(0);
+    opacity: 0;
+    transition: opacity 300ms, transform 300ms;
+}
+
+.chat-exit-done {
+    display: none;
+}

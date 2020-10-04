@@ -1,0 +1,129 @@
+.container {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20vw;
+    height: 40vh;
+    max-height: 40vh;
+    background-color: #ecddd3;
+    border: 1px solid rgba(153, 152, 76, 0.466);
+    margin: calc(2em + 50px);
+    border-radius: 10px;
+    padding: 2em 2em 1em 2em;
+    border-bottom-right-radius: 0;
+    transition: max-height 300ms;
+
+    &.username {
+        max-height: 200px;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.join-button {
+    width: 50%;
+    display: block;
+    margin: 30px auto;
+}
+
+.enter-username {
+    h1 {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    input {
+        text-align: center;
+        width: 100%;
+        border: none;
+        padding: 5px 10px;
+        background-color: #fff8f4;
+        outline: none;
+    }
+}
+
+.button {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    bottom: 0;
+    right: 0;
+    margin: 2em;
+    cursor: pointer;
+}
+
+.chat-wrapper {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 40px;
+
+    input {
+        width: 100%;
+        border: none;
+        padding: 5px 10px;
+        background-color: #fff8f4;
+        outline: none;
+    }
+}
+
+.chat-messages {
+    background-color: #dfcdc1;
+    margin-bottom: 20px;
+    overflow-y: scroll;
+
+    .chat-message {
+        color: white;
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px;
+        position: relative;
+        text-align: left;
+        background-color: #3b5569;
+
+        &.self {
+            text-align: right;
+            background-color: #007ACC;
+
+            .meta {
+                justify-content: flex-end;
+                flex-direction: row;
+
+            }
+        }
+
+        .meta {
+            font-size: 10px;
+            display: flex;
+            width: 100%;
+            justify-content: start;
+            margin: 0;
+            top: 0;
+            right: 0;
+            opacity: 0.75;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+
+            span {
+                margin: 0 2px;
+
+                &:last-child {
+                    font-weight: bold;
+                    text-transform: capitalize;
+                }
+            }
+        }
+
+        .chat-message-text {
+            font-size: 14px;
+            margin: 0;
+            padding: 2px 0;
+            line-height: 125%;
+            text-align: inherit;
+            overflow-wrap: break-word;
+        }
+    }
+}
