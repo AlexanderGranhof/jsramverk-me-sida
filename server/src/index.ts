@@ -19,6 +19,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import swagger from './swagger/middleware'
 import cookieParser from 'cookie-parser'
+import sockets from './api/sockets'
 
 import { HttpErrorHandler, JoiErrorHandler, SqliteErrorHandler } from './api/middleware/error'
 
@@ -59,6 +60,8 @@ app.use(SqliteErrorHandler)
 
 /* Start the server */
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(chalk.green(`Server listening to port ${port}`))
 })
+
+sockets(server)
