@@ -1,1 +1,1 @@
-export const domain = 'http://server:3001'
+export const domain = ''
