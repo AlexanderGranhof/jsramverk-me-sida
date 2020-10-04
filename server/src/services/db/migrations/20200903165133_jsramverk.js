@@ -12,10 +12,17 @@ exports.up = function (knex) {
         table.string('user_id').references('id').inTable('users')
     })
 
-    return Promise.all([users, reports])
+    const chat = knex.schema.createTable('chat', (table) => {
+        table.string('user')
+        table.date('time')
+        table.string('message')
+    })
+
+    return Promise.all([users, reports, chat])
 }
 
 exports.down = function (knex) {
     knex.schema.dropTable('reports')
     knex.schema.dropTable('users')
+    knex.schema.dropTable('chat')
 }
