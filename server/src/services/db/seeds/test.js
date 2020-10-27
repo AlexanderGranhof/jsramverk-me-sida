@@ -76,6 +76,42 @@ exports.seed = async function (knex) {
                 '<p>Det jag lärde mig mest var att man kunde sätta automatiska uppdateringar på sina linux paket. Det visste jag inte om tidigare, samt fick jag lära mig bättre metoder att deploya React med docker i molnet. Men annars gick allt smidigt. Juste certbot har man också använt tidigare for att skaffa gratis SSL. Har använt bokstavligen allt sedan tidigare.</p>' +
                 '<p>En sista sak att nämna, jag funderade lite på om man borde använda JWT istället och har kikat pa hur man kan implementera JWT på olika sätt. Jag visste inte om att man kunde spara den i en cookie där JS kunde inte komma åt den. Efter jag lärde mig det sa har jag byggt om servern så den nu kör pa JWT.</p>',
         },
+        {
+            week: 4,
+            user_id: 2,
+            content:
+                '<h1>3 usecases</h1>' +
+                '<p>Det första usecase för min me-applikation är startsidan där man borde se en titel, login knapp, och om komponenten som beskriver hemsidan</p>' +
+                '<p>Det andra usecase är när man byter reports på sidan, och att innehållet faktiskt ändras på startsidan</p>' +
+                '<p>Det sisa usecaset är när man redigerar reports inne på edit reports vyen. Där ska man kunna skriva in en del text, klicka spara och ladda om sidan för att se att ändringarna har gått igenom.</p>',
+        },
+        {
+            week: 5,
+            user_id: 2,
+            content: '<h1>Igen rapportering för kmom05 enligt jsramverk.se</h1>',
+        },
+        {
+            week: 6,
+            user_id: 2,
+            content: '<h1>Igen rapportering för kmom06 enligt jsramverk.se</h1>',
+        },
+        {
+            week: 7,
+            user_id: 2,
+            content:
+                '<h1>Projektet</h1>' +
+                '<h2>Krav 4</h2>' +
+                '<p>För krav 4 valde jag att använda samma test bilbiotek som frontend, jest. Jest erbjuder kodtäckning direkt utan några andra bibliotek som måste installeras. Samt gör det lättare för potientiella andra utvecklare att skriva tester då det är samma syntax som i backend som frontend. Jag testade alla mina middlewares förutom de som används i main filen, då är det fel med dem så krashar servern direkt. Mina routes testar jag då inte som unit tests utan de körs som integration tests som också körs med jest.</p>' +
+                '<h2>Krav 5</h2>' +
+                '<p>För testerna i frontend så använde jag mig av det som kommer med React. De använder jest som är deras egna testnings bibliotek. Jest har mycket bra stöd för att testa react där de erbjuder flera verktyg att rendera och debugga den virtuella react DOM. Denna gången var det mycket enklare att testa då du behöver inte ha en server körades med både backend och frontend som ska fungera. Med jest kan du mocka backended genom att skapa en proxy för fetch API:et där du själv manuellt retunerar fake data. Skulle definitift rekommendera att ni byter från selenium till testningbiblioteket som kommer med varje ramverk.</p>' +
+                '<h2>Krav 6</h2>' +
+                '<p>Det är lite oklart om vad vi faktiskt skulle skriva om för detta kravet. Lät först som vi skulle skriva om vad som ha gjorts inom att visa en chart för en marknad. Men frågade och fick svar efteråt. Skulle inte skada att har lite mer information om vad och hur vi ska skriva. Vilka krav det är på det, hur mycket ska vi skriva och hur djupt ska man skriva om det? Vet ej hur många referenser man ska använda. I mitt fall använde jag två eller tre referenser för varje fråga jag hade. I mitt fall så skrev båda referenser väldigt likt om det mina fråger handlade om så det var inget de hade "in conflict with each other" som det står på jsramverk.se</p>' +
+                '<p>Generellt tycker jag att projektet gick okej. Inte jättebra då jag skulle gärna vilja att min chart blev bättre. Då jag utmanade mig själv att bygga en helt från grunden med hjälp av d3.js. Jag lärde mig mycket och ska definitft använde det för min egen portfolio samt med gsap. Gsap ett annat animations bibliotek som jag använde mig av för att göra alla animationer på hemsidan. Det ska vara ganska populärt och är väldigt lätt att använda. Skulle inte vara emot om man hade kanske en vecka till för projektet.</p>' +
+                '<p>Till sist om feedback, det skulle inte vara dummt om man hade en mer detaljerad guide om CI. Jag bet att många satt fast med tesning i kmom4 eller 5 där det gick inte alls att få något att fungera på CI. Hur man faksiskt få en server och en klient att köra på ett CI så man kan testa det. Sedan till sist så finns det ett par youtube klipp som snabbt beskriver varje ramverk väldigt snyggt som jag kan rekommendera att man har på jsramverk.se för framtida studenter. Länkar dem tre undertill.<p>' +
+                '<a href="https://www.youtube.com/watch?v=Tn6-PIqc4UM">https://www.youtube.com/watch?v=Tn6-PIqc4UM</a>' +
+                '<a href="https://www.youtube.com/watch?v=Ata9cSC2WpM">https://www.youtube.com/watch?v=Ata9cSC2WpM</a>' +
+                '<a href="https://www.youtube.com/watch?v=nhBVL41-_Cw">https://www.youtube.com/watch?v=nhBVL41-_Cw</a>',
+        },
     ])
 
     return Promise.all([users, reports])
